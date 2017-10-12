@@ -1,0 +1,27 @@
+{
+  "name": "empty-s3-bucket",
+  "version": "1.0.1",
+  "description": "Empty an Amazon S3 Bucket",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sabrehagen/empty-s3-bucket.git"
+  },
+  "keywords": [
+    "empty",
+    "s3",
+    "bucket"
+  ],
+  "author": "Jackson Delahunt",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/sabrehagen/empty-s3-bucket/issues"
+  },
+  "homepage": "https://github.com/sabrehagen/empty-s3-bucket#readme",
+  "dependencies": {
+    "aws-sdk": "^2.132.0"
+  }
+}
