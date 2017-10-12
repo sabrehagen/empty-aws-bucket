@@ -1,5 +1,5 @@
 {
-  "name": "empty-s3-bucket",
+  "name": "empty-aws-bucket",
   "version": "1.0.1",
   "description": "Empty an Amazon S3 Bucket",
   "main": "index.js",
