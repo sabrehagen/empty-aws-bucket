@@ -1,7 +1,11 @@
 const aws = require('aws-sdk');
 const s3 = new aws.S3();
 
-const emptyBucket = async (Bucket) => {
+const emptyBucket = async (Bucket, options) => {
+
+  if (options) {
+    aws.config.update(options);
+  }
 
   const deleteObjects = async (objects) => {
     // before we can delete the bucket, we must delete all versions of all objects
@@ -27,6 +31,14 @@ const emptyBucket = async (Bucket) => {
   // if the bucket contains delete markers, delete them
   await DeleteMarkers.length > 0
     ? deleteObjects(DeleteMarkers)
+    : Promise.resolve();
+
+  // if there are any non-versioned contents, delete them too
+  const { Contents } = await s3.listObjectsV2({ Bucket }).promise();
+
+  // if the bucket contains delete markers, delete them
+  await Contents.length > 0
+    ? deleteObjects(Contents)
     : Promise.resolve();
 };
 
