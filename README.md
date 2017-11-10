@@ -18,7 +18,6 @@ The first argument is the bucket name, and the second argument is an optional co
 emptyBucket(bucketName, [config]);
 ```
 
-
 ### Usage
 
 ```
@@ -34,3 +33,7 @@ const awsConfig = {
 
 emptyBucket('other-bucket', awsConfig);
 ```
+
+### Debugging
+
+The (`AWSJS_DEBUG`)[https://github.com/aws/aws-sdk-js/blob/master/CHANGELOG.md#21420] environment variable enables logging in `aws-sdk`. If the `AWSJS_DEBUG` environment variable is set this module will log debug information also.
