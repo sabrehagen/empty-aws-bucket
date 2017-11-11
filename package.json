@@ -1,6 +1,6 @@
 {
   "name": "empty-aws-bucket",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "description": "Empty an Amazon S3 Bucket",
   "main": "index.js",
   "scripts": {
