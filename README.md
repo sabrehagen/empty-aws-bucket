@@ -7,7 +7,7 @@ For a given S3 bucket, all objects and their versions will be deleted.
 ### Run
 
 ```
-npm install --save empty-s3-bucket
+npm install --save empty-aws-bucket
 ```
 
 ### API
@@ -21,7 +21,7 @@ emptyBucket(bucketName, [config]);
 ### Usage
 
 ```
-const emptyBucket = require('empty-s3-bucket');
+const emptyBucket = require('empty-aws-bucket');
 
 emptyBucket('my-bucket');
 
