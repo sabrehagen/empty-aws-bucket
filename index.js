@@ -14,16 +14,18 @@ const emptyBucket = async (Bucket, options) => {
     }
   }
 
-  const emptyBucket = async () => {
-    const deleteObjects = async (objects) => {
-      // before we can delete the bucket, we must delete all versions of all objects
-      const Objects = objects.map(({ Key, VersionId }) => ({ Key, VersionId }));
+  const deleteObjects = async (objects) => {
+    // before we can delete the bucket, we must delete all versions of all objects
+    const Objects = objects.map(({ Key, VersionId }) => ({ Key, VersionId }));
 
-      await s3.deleteObjects({
-        Bucket,
-        Delete: { Objects }
-      }).promise()
-    };
+    await s3.deleteObjects({
+      Bucket,
+      Delete: { Objects }
+    }).promise()
+  };
+
+  const runBatch = async () => {
+    let count = 0
 
     // get the list of all objects in the bucket
     const { Versions } = await s3.listObjectVersions({ Bucket }).promise();
@@ -32,6 +34,7 @@ const emptyBucket = async (Bucket, options) => {
     debug(`Deleting ${Versions.length} object versions`);
     if (Versions.length > 0) {
       await deleteObjects(Versions);
+      count += Versions.length;
     }
 
     // check for any files marked as deleted previously
@@ -41,6 +44,7 @@ const emptyBucket = async (Bucket, options) => {
     debug(`Deleting ${DeleteMarkers.length} object delete markers`);
     if (DeleteMarkers.length > 0) {
       await deleteObjects(DeleteMarkers);
+      count += DeleteMarkers.length;
     }
 
     // if there are any non-versioned contents, delete them too
@@ -50,19 +54,27 @@ const emptyBucket = async (Bucket, options) => {
     debug(`Deleting ${Contents.length} objects`);
     if (Contents.length > 0) {
       await deleteObjects(Contents);
+      count += Versions.length;
     }
+
+    return count;
   };
 
-  try {
-    debug(`Emptying bucket`);
-    await emptyBucket();
-  } catch (e) {
-    if (e.code === 'NoSuchBucket') {
-      debug('Bucket not found!');
-    } else {
-      throw e;
+  debug(`Emptying bucket`);
+
+  let batchCount
+  do {
+    try {
+      batchCount = await runBatch();
+    } catch (e) {
+      if (e.code === 'NoSuchBucket') {
+        debug('Bucket not found!');
+      } else {
+        throw e;
+      }
     }
-  }
+  } while (batchCount);
+
 };
 
 module.exports = emptyBucket;
