@@ -1,5 +1,4 @@
 const aws = require('aws-sdk');
-const s3 = new aws.S3();
 
 const emptyBucket = async (Bucket, options) => {
 
@@ -13,6 +12,8 @@ const emptyBucket = async (Bucket, options) => {
       console.log(`empty-aws-bucket | ${Bucket} |`, ...args);
     }
   }
+
+  const s3 = new aws.S3();
 
   const deleteObjects = async (objects) => {
     // before we can delete the bucket, we must delete all versions of all objects
